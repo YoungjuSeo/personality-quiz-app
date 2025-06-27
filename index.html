@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>성향 파악 미니 퀴즈</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 시작 화면 -->
+        <div id="start-screen" class="screen active">
+            <div class="content">
+                <h1 class="title">성향 파악<br>미니 퀴즈</h1>
+                <p class="subtitle">각자 답변하고<br>결과를 비교해보세요</p>
+                <div class="start-options">
+                    <button id="create-session-btn" class="btn btn-primary">새 퀴즈 만들기</button>
+                    <button id="join-session-btn" class="btn btn-secondary">기존 퀴즈 참여</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 세션 생성 화면 -->
+        <div id="create-session-screen" class="screen">
+            <div class="content">
+                <h2 class="screen-title">퀴즈 세션 생성</h2>
+                <div class="user-inputs">
+                    <div class="input-group">
+                        <label for="create-user1-name">첫 번째 사람</label>
+                        <input type="text" id="create-user1-name" placeholder="이름을 입력하세요" maxlength="10">
+                    </div>
+                    <div class="input-group">
+                        <label for="create-user2-name">두 번째 사람</label>
+                        <input type="text" id="create-user2-name" placeholder="이름을 입력하세요" maxlength="10">
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button id="back-to-start" class="btn btn-secondary">뒤로</button>
+                    <button id="create-session" class="btn btn-primary">세션 생성</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 세션 참여 화면 -->
+        <div id="join-session-screen" class="screen">
+            <div class="content">
+                <h2 class="screen-title">퀴즈 참여</h2>
+                <div class="user-inputs">
+                    <div class="input-group">
+                        <label for="session-id">세션 ID</label>
+                        <input type="text" id="session-id" placeholder="세션 ID를 입력하세요">
+                    </div>
+                    <div class="input-group">
+                        <label for="join-user-name">내 이름</label>
+                        <input type="text" id="join-user-name" placeholder="이름을 입력하세요" maxlength="10">
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button id="back-to-start-2" class="btn btn-secondary">뒤로</button>
+                    <button id="join-session" class="btn btn-primary">참여하기</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 세션 정보 화면 -->
+        <div id="session-info-screen" class="screen">
+            <div class="content">
+                <h2 class="screen-title">퀴즈 세션</h2>
+                <div class="session-info">
+                    <div class="session-id">
+                        <label>세션 ID:</label>
+                        <div class="session-id-display">
+                            <span id="display-session-id">-</span>
+                            <button id="copy-session-id" class="copy-btn">복사</button>
+                        </div>
+                    </div>
+                    <div class="participants">
+                        <div class="participant">
+                            <span id="participant1-name">-</span>
+                            <span id="participant1-status" class="status pending">대기 중</span>
+                        </div>
+                        <div class="participant">
+                            <span id="participant2-name">-</span>
+                            <span id="participant2-status" class="status pending">대기 중</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="session-actions">
+                    <button id="start-my-quiz" class="btn btn-primary">내 퀴즈 시작</button>
+                    <button id="check-results" class="btn btn-secondary" style="display: none;">결과 확인</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 퀴즈 화면 -->
+        <div id="quiz-screen" class="screen">
+            <div class="content">
+                <div class="quiz-header">
+                    <div class="current-user-info">
+                        <span id="quiz-user-name">사용자</span>의 퀴즈
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div id="progress-fill" class="progress-fill"></div>
+                        </div>
+                        <span id="progress-text" class="progress-text">1/10</span>
+                    </div>
+                </div>
+
+                <div class="question-container">
+                    <h3 id="question-text" class="question">질문이 여기에 표시됩니다</h3>
+                </div>
+
+                <div class="options-container">
+                    <button class="option-btn" data-type="A">
+                        <span class="option-text">옵션 A</span>
+                    </button>
+                    <button class="option-btn" data-type="B">
+                        <span class="option-text">옵션 B</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 답변 완료 화면 -->
+        <div id="completion-screen" class="screen">
+            <div class="content">
+                <div class="completion-icon">✅</div>
+                <h2 class="screen-title">답변 완료!</h2>
+                <p class="completion-message">
+                    모든 질문에 답변하셨습니다.<br>
+                    상대방이 답변을 완료하면 결과를 확인할 수 있습니다.
+                </p>
+                <div class="button-group">
+                    <button id="back-to-session" class="btn btn-primary">세션으로 돌아가기</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 결과 화면 -->
+        <div id="result-screen" class="screen">
+            <div class="content">
+                <h2 class="screen-title">결과 분석</h2>
+                
+                <div class="result-summary">
+                    <div class="match-rate">
+                        <div class="match-circle">
+                            <span id="match-percentage">85%</span>
+                        </div>
+                        <p class="match-label">일치율</p>
+                    </div>
+                </div>
+
+                <div class="user-names">
+                    <span id="result-user1">사용자1</span> & <span id="result-user2">사용자2</span>
+                </div>
+
+                <!-- 성향 분석 섹션 -->
+                <div class="personality-analysis">
+                    <h3>성향 분석</h3>
+                    <div class="analysis-grid">
+                        <div class="analysis-item">
+                            <h4>사회성</h4>
+                            <div class="analysis-bars">
+                                <div class="analysis-bar">
+                                    <span id="user1-social-label">외향적</span>
+                                    <div class="bar-container">
+                                        <div id="user1-social-bar" class="bar-fill"></div>
+                                    </div>
+                                </div>
+                                <div class="analysis-bar">
+                                    <span id="user2-social-label">내향적</span>
+                                    <div class="bar-container">
+                                        <div id="user2-social-bar" class="bar-fill"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="analysis-item">
+                            <h4>의사결정</h4>
+                            <div class="analysis-bars">
+                                <div class="analysis-bar">
+                                    <span id="user1-decision-label">직감적</span>
+                                    <div class="bar-container">
+                                        <div id="user1-decision-bar" class="bar-fill"></div>
+                                    </div>
+                                </div>
+                                <div class="analysis-bar">
+                                    <span id="user2-decision-label">분석적</span>
+                                    <div class="bar-container">
+                                        <div id="user2-decision-bar" class="bar-fill"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 매칭 분석 섹션 -->
+                <div class="matching-analysis">
+                    <h3>매칭 분석</h3>
+                    <div class="matching-grid">
+                        <div class="matching-item">
+                            <span class="matching-label">전체 호환성</span>
+                            <div class="matching-score">
+                                <span id="overall-score">85</span>%
+                            </div>
+                        </div>
+                        <div class="matching-item">
+                            <span class="matching-label">사회성 호환성</span>
+                            <div class="matching-score">
+                                <span id="social-score">80</span>%
+                            </div>
+                        </div>
+                        <div class="matching-item">
+                            <span class="matching-label">의사결정 호환성</span>
+                            <div class="matching-score">
+                                <span id="decision-score">90</span>%
+                            </div>
+                        </div>
+                        <div class="matching-item">
+                            <span class="matching-label">라이프스타일 호환성</span>
+                            <div class="matching-score">
+                                <span id="lifestyle-score">75</span>%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-details">
+                    <h3>답변 비교</h3>
+                    <div id="answer-comparison" class="comparison-list">
+                        <!-- 답변 비교 결과가 여기에 동적으로 추가됩니다 -->
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button id="restart-quiz" class="btn btn-primary">새 퀴즈 만들기</button>
+                    <button id="share-result" class="btn btn-secondary">공유하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
