@@ -12,76 +12,12 @@ const API_BASE_URL = 'https://personality-quiz-app.onrender.com/api';
 // DOM 요소들
 // (기존 screens 객체 정의 부분 삭제)
 
-// MBTI 궁합/설명 데이터 (예시, 필요시 확장)
-const MBTI_INFO = {
-    'ENFP-INTJ': {
-        compatibility: '매우 좋음',
-        desc: '서로의 부족한 점을 채워주며, 대화가 잘 통하는 조합입니다.',
-        tip: '서로의 차이를 존중하고, 솔직하게 감정을 표현해보세요.'
-    },
-    'INFP-ENFJ': {
-        compatibility: '좋음',
-        desc: '감정적 공감대가 높고, 서로를 잘 이해해주는 편입니다.',
-        tip: '상대방의 감정을 세심하게 배려해 주세요.'
-    },
-    'ENTP-ISFJ': {
-        compatibility: '보통',
-        desc: '성향 차이가 크지만, 서로에게 신선한 자극이 될 수 있습니다.',
-        tip: '서로의 방식을 강요하지 말고, 열린 마음으로 대화하세요.'
-    },
-    // ... (다른 조합도 필요시 추가)
-};
+// MBTI 관련 코드 전체 제거
+// 1. getMbtiInfo, updateMbtiInfoBox, updateMbtiInfoBoxComplete, updateMbtiResultBox, saveMbti 함수 삭제
+// 2. MBTI_TYPES, MBTI_INFO 상수 삭제
+// 3. MBTI 입력/저장/표시 관련 DOM 이벤트 및 코드 삭제
+// 4. showScreen 함수에서 setupMbtiOtpInput 관련 코드 삭제
 
-// MBTI 16종
-const MBTI_TYPES = [
-    'ENFJ','ENFP','ENTJ','ENTP','ESFJ','ESFP','ESTJ','ESTP',
-    'INFJ','INFP','INTJ','INTP','ISFJ','ISFP','ISTJ','ISTP'
-];
-
-function getMbtiInfo(mbti1, mbti2) {
-    if (!mbti1 || !mbti2) return null;
-    const key1 = `${mbti1}-${mbti2}`;
-    const key2 = `${mbti2}-${mbti1}`;
-    return MBTI_INFO[key1] || MBTI_INFO[key2] || {
-        compatibility: '정보 없음',
-        desc: '아직 준비 중인 조합입니다.',
-        tip: '다양한 MBTI 조합을 시도해보세요!'
-    };
-}
-
-function updateMbtiInfoBox() {
-    const mbti1 = document.getElementById('mbti-self').value;
-    const mbti2 = document.getElementById('mbti-other').value;
-    const infoBox = document.getElementById('mbti-info-box');
-    if (!mbti1 || !mbti2) {
-        infoBox.innerHTML = '<p class="mbti-info-default">MBTI를 선택하면 궁합, 특징, 대화팁이 표시됩니다.</p>';
-        return;
-    }
-    const info = getMbtiInfo(mbti1, mbti2);
-    infoBox.innerHTML = `
-        <div><strong>궁합:</strong> ${info.compatibility}</div>
-        <div style="margin:8px 0 4px 0;"><strong>설명:</strong> ${info.desc}</div>
-        <div><strong>대화팁:</strong> ${info.tip}</div>
-    `;
-}
-
-function updateMbtiInfoBoxComplete() {
-    const mbti1 = document.getElementById('mbti-self-complete').value;
-    const mbti2 = document.getElementById('mbti-other-complete').value;
-    const infoBox = document.getElementById('mbti-info-box-complete');
-    if (!mbti1 || !mbti2) {
-        infoBox.innerHTML = '<p class="mbti-info-default">MBTI를 선택하면 궁합, 특징, 대화팁이 표시됩니다.</p>';
-        return;
-    }
-    const info = getMbtiInfo(mbti1, mbti2);
-    infoBox.innerHTML = `
-        <div><strong>궁합:</strong> ${info.compatibility}</div>
-        <div style="margin:8px 0 4px 0;"><strong>설명:</strong> ${info.desc}</div>
-        <div><strong>대화팁:</strong> ${info.tip}</div>
-    `;
-}
-
-// 화면 전환 함수
 function showScreen(screenKey) {
     const screens = window.screens; // 항상 최신 screens 참조
     if (!screens) return;
@@ -89,20 +25,15 @@ function showScreen(screenKey) {
     Object.values(screens).forEach(screen => {
         if (screen) screen.classList.remove('active', 'prev');
     });
-    
     // 현재 활성화된 화면을 prev로 설정
     const currentActive = document.querySelector('.screen.active');
     if (currentActive) {
         currentActive.classList.add('prev');
     }
-    
     // 새 화면 활성화
     if (screens[screenKey]) {
         screens[screenKey].classList.add('active');
-        // 답변 완료 화면이 활성화될 때만 MBTI OTP 입력 초기화
-        if (screenKey === 'completion') {
-            setTimeout(setupMbtiOtpInput, 100);
-        }
+        // MBTI OTP 입력 초기화 코드 완전 삭제
     }
 }
 
@@ -490,58 +421,6 @@ document.addEventListener('DOMContentLoaded', function() {
         joinUserNameInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 document.getElementById('join-session').click();
-            }
-        });
-    }
-    
-    // 답변 완료 화면 MBTI 입력
-    const mbtiSelfInput = document.getElementById('mbti-self');
-    const infoBoxComplete = document.getElementById('mbti-info-box-complete');
-    if (mbtiSelfInput) {
-        mbtiSelfInput.addEventListener('input', async function() {
-            let val = mbtiSelfInput.value.toUpperCase().replace(/[^A-Z]/g, '').slice(0,4);
-            mbtiSelfInput.value = val;
-            if (val.length === 4) {
-                if (MBTI_TYPES.includes(val)) {
-                    if (currentSession && currentUser) {
-                        await saveMbti(currentSession.id, currentUser, val);
-                        infoBoxComplete.innerHTML = '<p class="mbti-info-default">MBTI가 저장되었습니다!</p>';
-                    }
-                } else {
-                    infoBoxComplete.innerHTML = '<p class="mbti-info-default">올바른 MBTI 4글자를 입력하세요.</p>';
-                }
-            } else {
-                infoBoxComplete.innerHTML = '';
-            }
-        });
-    }
-    // 결과 화면 MBTI 입력
-    const mbtiOtherInput = document.getElementById('mbti-other');
-    const infoBox = document.getElementById('mbti-info-box');
-    if (mbtiOtherInput) {
-        mbtiOtherInput.addEventListener('input', function() {
-            let val = mbtiOtherInput.value.toUpperCase().replace(/[^A-Z]/g, '').slice(0,4);
-            mbtiOtherInput.value = val;
-            if (val.length === 4) {
-                if (MBTI_TYPES.includes(val)) {
-                    // 궁합/설명 표시
-                    const user1Mbti = mbtiSelfInput ? mbtiSelfInput.value : '';
-                    const user2Mbti = val;
-                    if (user1Mbti && MBTI_TYPES.includes(user1Mbti)) {
-                        const info = getMbtiInfo(user1Mbti, user2Mbti);
-                        infoBox.innerHTML = `
-                            <div><strong>궁합:</strong> ${info.compatibility}</div>
-                            <div style="margin:8px 0 4px 0;"><strong>설명:</strong> ${info.desc}</div>
-                            <div><strong>대화팁:</strong> ${info.tip}</div>
-                        `;
-                    } else {
-                        infoBox.innerHTML = '<p class="mbti-info-default">상대방이 아직 MBTI를 입력하지 않았어요.</p>';
-                    }
-                } else {
-                    infoBox.innerHTML = '<p class="mbti-info-default">올바른 MBTI 4글자를 입력하세요.</p>';
-                }
-            } else {
-                infoBox.innerHTML = '';
             }
         });
     }
