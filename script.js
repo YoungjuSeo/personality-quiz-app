@@ -472,15 +472,21 @@ async function showResults() {
 
 // 결과 표시
 function displayResults(result) {
-    // 기본 정보
+    // 전체 유사성(일치율)에는 반드시 result.matchPercentage 사용
+    const overallElem = document.getElementById('overall-score');
+    if (overallElem) overallElem.textContent = result.matchPercentage;
+    // 나머지 항목별 유사성은 matchingAnalysis 사용
+    const socialElem = document.getElementById('social-score');
+    if (socialElem) socialElem.textContent = result.matchingAnalysis.socialCompatibility;
+    const decisionElem = document.getElementById('decision-score');
+    if (decisionElem) decisionElem.textContent = result.matchingAnalysis.decisionCompatibility;
+    const lifestyleElem = document.getElementById('lifestyle-score');
+    if (lifestyleElem) lifestyleElem.textContent = result.matchingAnalysis.lifestyleCompatibility;
+    // 이름 등 나머지 정보 표시
     const user1Elem = document.getElementById('result-user1');
     const user2Elem = document.getElementById('result-user2');
     if (user1Elem) user1Elem.textContent = result.session.user1Name;
     if (user2Elem) user2Elem.textContent = result.session.user2Name;
-    const matchElem = document.getElementById('match-percentage');
-    if (matchElem) matchElem.textContent = `${result.matchPercentage}%`;
-    // 매칭 분석 표시
-    displayMatchingAnalysis(result.matchingAnalysis);
     // 답변 비교 표시
     displayAnswerComparison(
         result.comparison,
