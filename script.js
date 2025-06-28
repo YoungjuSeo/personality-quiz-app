@@ -315,7 +315,6 @@ function copySessionId() {
         const originalText = copyBtn.textContent;
         copyBtn.textContent = '복사됨!';
         copyBtn.style.background = '#48bb78';
-        
         setTimeout(() => {
             copyBtn.textContent = originalText;
             copyBtn.style.background = '#667eea';
