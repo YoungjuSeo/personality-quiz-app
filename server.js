@@ -162,17 +162,17 @@ function analyzeMatching(user1Analysis, user2Analysis) {
     const socialDiff = Math.abs(user1Analysis.socialTendency - user2Analysis.socialTendency);
     matching.socialCompatibility = Math.max(0, 100 - (socialDiff * 20));
     
-    // 의사결정 호환성 (보완적일수록 높은 점수)
+    // 의사결정 호환성 (비슷할수록 높은 점수)
     const decisionDiff = Math.abs(user1Analysis.decisionStyle - user2Analysis.decisionStyle);
-    matching.decisionCompatibility = Math.min(100, decisionDiff * 15);
+    matching.decisionCompatibility = Math.max(0, 100 - (decisionDiff * 20));
     
     // 라이프스타일 호환성 (비슷할수록 높은 점수)
     const lifestyleDiff = Math.abs(user1Analysis.stressManagement - user2Analysis.stressManagement);
     matching.lifestyleCompatibility = Math.max(0, 100 - (lifestyleDiff * 20));
     
-    // 소통 호환성 (보완적일수록 높은 점수)
+    // 소통 호환성 (비슷할수록 높은 점수)
     const communicationDiff = Math.abs(user1Analysis.emotionalExpression - user2Analysis.emotionalExpression);
-    matching.communicationCompatibility = Math.min(100, communicationDiff * 15);
+    matching.communicationCompatibility = Math.max(0, 100 - (communicationDiff * 20));
     
     // 전체 호환성
     matching.overall = Math.round(
