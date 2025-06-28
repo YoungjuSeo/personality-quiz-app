@@ -499,32 +499,28 @@ function displayMatchingAnalysis(matching) {
 function displayAnswerComparison(comparison, user1Name, user2Name, isUser1) {
     const comparisonList = document.getElementById('answer-comparison');
     comparisonList.innerHTML = '';
-
     // 이름 헤더 한 번만 추가 (각 열 위에 이름이 가운데 정렬로 위치)
     const header = document.createElement('div');
     header.className = 'comparison-header';
     header.innerHTML = `
-        <span class="question-number"></span>
+        <div class="question-number"></div>
         <div class="answers" style="width: 100%; display: flex; justify-content: center; gap: 10px;">
             <span class="answer-label" style="flex:1; text-align: center;">${isUser1 ? user1Name : user2Name}</span>
             <span class="answer-label" style="flex:1; text-align: center;">${isUser1 ? user2Name : user1Name}</span>
         </div>
     `;
     comparisonList.appendChild(header);
-
     // 각 답변 비교
     comparison.forEach((item, index) => {
         const comparisonItem = document.createElement('div');
         comparisonItem.className = `comparison-item ${item.isMatch ? 'match' : 'different'}`;
-
         const myAnswer = isUser1 ? item.user1Answer : item.user2Answer;
         const otherAnswer = isUser1 ? item.user2Answer : item.user1Answer;
-
         comparisonItem.innerHTML = `
-            <span class="question-number">질문 ${index + 1}</span>
-            <div class="answers">
-                <span class="answer ${item.isMatch ? 'match' : 'different'}">${myAnswer}</span>
-                <span class="answer ${item.isMatch ? 'match' : 'different'}">${otherAnswer}</span>
+            <div class="question-number">질문 ${index + 1}</div>
+            <div class="answers" style="width: 100%; display: flex; justify-content: center; gap: 10px;">
+                <span class="answer ${item.isMatch ? 'match' : 'different'}" style="flex:1; text-align: center;">${myAnswer}</span>
+                <span class="answer ${item.isMatch ? 'match' : 'different'}" style="flex:1; text-align: center;">${otherAnswer}</span>
             </div>
         `;
         comparisonList.appendChild(comparisonItem);
@@ -548,19 +544,23 @@ function copySessionId() {
 
 // 공유 기능
 function shareResult() {
-    const user1Name = document.getElementById('result-user1')?.textContent || '';
-    const user2Name = document.getElementById('result-user2')?.textContent || '';
-    const overallScore = document.getElementById('overall-score')?.textContent || '';
-    const shareText = `${user1Name}와 ${user2Name}의 전체 유사성: ${overallScore}%`;
-    if (navigator.share) {
-        navigator.share({
-            title: '성향 파악 미니 퀴즈 결과',
-            text: shareText,
-            url: window.location.href
-        });
-    } else {
-        navigator.clipboard.writeText(shareText).then(() => {
-            alert('결과가 클립보드에 복사되었습니다!');
-        });
+    try {
+        const user1Name = document.getElementById('result-user1')?.textContent || '';
+        const user2Name = document.getElementById('result-user2')?.textContent || '';
+        const overallScore = document.getElementById('overall-score')?.textContent || '';
+        const shareText = `${user1Name}와 ${user2Name}의 전체 유사성: ${overallScore}%`;
+        if (navigator.share) {
+            navigator.share({
+                title: '성향 파악 미니 퀴즈 결과',
+                text: shareText,
+                url: window.location.href
+            });
+        } else {
+            navigator.clipboard.writeText(shareText).then(() => {
+                alert('결과가 클립보드에 복사되었습니다!');
+            });
+        }
+    } catch (e) {
+        // 공유 취소(AbortError) 등은 무시
     }
 } 
