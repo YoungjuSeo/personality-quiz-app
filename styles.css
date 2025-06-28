@@ -532,11 +532,29 @@ body {
     font-weight: 600;
 }
 
+.comparison-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.05rem;
+    margin-bottom: 6px;
+    gap: 30px;
+}
+
+#answer-comparison-header {
+    font-weight: bold;
+    font-size: 1.15rem;
+    text-align: center;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
 .comparison-list {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    max-height: 350px;
+    max-height: 400px;
     overflow-y: auto;
 }
 

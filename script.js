@@ -633,14 +633,14 @@ function displayAnswerComparison(comparison, user1Name, user2Name, isUser1) {
     const comparisonList = document.getElementById('answer-comparison');
     comparisonList.innerHTML = '';
 
-    // 이름 헤더 한 번만 추가
+    // 이름 헤더 한 번만 추가 (각 열 위에 이름이 가운데 정렬로 위치)
     const header = document.createElement('div');
     header.className = 'comparison-header';
     header.innerHTML = `
         <span class="question-number"></span>
-        <div class="answers">
-            <div class="answer-label">${isUser1 ? user1Name : user2Name}</div>
-            <div class="answer-label">${isUser1 ? user2Name : user1Name}</div>
+        <div class="answers" style="width: 100%; display: flex; justify-content: center; gap: 10px;">
+            <span class="answer-label" style="flex:1; text-align: center;">${isUser1 ? user1Name : user2Name}</span>
+            <span class="answer-label" style="flex:1; text-align: center;">${isUser1 ? user2Name : user1Name}</span>
         </div>
     `;
     comparisonList.appendChild(header);

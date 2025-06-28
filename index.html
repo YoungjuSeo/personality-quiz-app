@@ -143,65 +143,10 @@
         <!-- 결과 화면 -->
         <div id="result-screen" class="screen">
             <div class="content">
-                <h2 class="screen-title">결과 분석</h2>
-                
-                <div class="result-summary">
-                    <div class="match-rate">
-                        <div class="match-circle">
-                            <span id="match-percentage">85%</span>
-                        </div>
-                        <p class="match-label">일치율</p>
-                    </div>
+                <div class="user-names" style="justify-content: center; display: flex; font-weight: bold; font-size: 1.2rem; margin-bottom: 20px;">
+                    <span id="result-user1">공유</span> & <span id="result-user2">김사랑</span>
                 </div>
-
-                <div class="user-names">
-                    <span id="result-user1">사용자1</span> & <span id="result-user2">사용자2</span>
-                </div>
-
-                <!-- 성향 분석 섹션 -->
-                <div class="personality-analysis">
-                    <h3>성향 분석</h3>
-                    <div class="analysis-grid">
-                        <div class="analysis-item">
-                            <h4>사회성</h4>
-                            <div class="analysis-bars">
-                                <div class="analysis-bar">
-                                    <span id="user1-social-label">외향적</span>
-                                    <div class="bar-container">
-                                        <div id="user1-social-bar" class="bar-fill"></div>
-                                    </div>
-                                </div>
-                                <div class="analysis-bar">
-                                    <span id="user2-social-label">내향적</span>
-                                    <div class="bar-container">
-                                        <div id="user2-social-bar" class="bar-fill"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="analysis-item">
-                            <h4>의사결정</h4>
-                            <div class="analysis-bars">
-                                <div class="analysis-bar">
-                                    <span id="user1-decision-label">직감적</span>
-                                    <div class="bar-container">
-                                        <div id="user1-decision-bar" class="bar-fill"></div>
-                                    </div>
-                                </div>
-                                <div class="analysis-bar">
-                                    <span id="user2-decision-label">분석적</span>
-                                    <div class="bar-container">
-                                        <div id="user2-decision-bar" class="bar-fill"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 매칭 분석 섹션 -->
                 <div class="matching-analysis">
-                    <h3>매칭 분석</h3>
                     <div class="matching-grid">
                         <div class="matching-item">
                             <span class="matching-label">전체 호환성</span>
@@ -229,14 +174,12 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="result-details">
-                    <h3>답변 비교</h3>
+                    <div id="answer-comparison-header" style="font-weight: bold; font-size: 1.1rem; margin-bottom: 10px; text-align: center;">김사랑  공유</div>
                     <div id="answer-comparison" class="comparison-list">
                         <!-- 답변 비교 결과가 여기에 동적으로 추가됩니다 -->
                     </div>
                 </div>
-
                 <div class="button-group">
                     <button id="restart-quiz" class="btn btn-primary">새 퀴즈 만들기</button>
                     <button id="share-result" class="btn btn-secondary">공유하기</button>
