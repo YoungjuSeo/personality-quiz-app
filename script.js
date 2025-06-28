@@ -4,6 +4,7 @@ let currentUser = null;
 let currentQuestionIndex = 0;
 let userAnswers = [];
 let questions = [];
+let isSubmitting = false; // 중복 제출 방지 플래그
 
 // API 기본 URL
 const API_BASE_URL = 'https://personality-quiz-app.onrender.com/api';
@@ -263,6 +264,11 @@ function handleAnswer(answerType) {
     // 답변 저장
     userAnswers.push(answerType);
     
+    // 마지막 문제라면 버튼 비활성화
+    if (currentQuestionIndex === questions.length - 1) {
+        optionButtons.forEach(btn => btn.disabled = true);
+    }
+    
     // 잠시 후 다음 단계로
     setTimeout(() => {
         nextStep();
@@ -282,6 +288,13 @@ function nextStep() {
 
 // 답변 제출
 async function submitAnswers() {
+    if (isSubmitting) return; // 중복 제출 방지
+    isSubmitting = true;
+    if (userAnswers.length !== questions.length) {
+        alert('모든 질문에 답변해주세요.');
+        isSubmitting = false;
+        return;
+    }
     try {
         const result = await apiCall(`/sessions/${currentSession.id}/answers`, {
             method: 'POST',
@@ -292,14 +305,14 @@ async function submitAnswers() {
         });
         
         if (result.completed) {
-            // 모든 참여자가 완료
             showResults();
         } else {
-            // 아직 다른 참여자 대기 중
             showScreen('completion');
         }
     } catch (error) {
         console.error('답변 제출 실패:', error);
+    } finally {
+        isSubmitting = false;
     }
 }
 
