@@ -67,14 +67,21 @@ async function createSession(user1Name, user2Name) {
             method: 'POST',
             body: JSON.stringify({ user1Name, user2Name })
         });
-        
-        currentSession = result;
+
+        // result.sessionId가 실제로 있는지 콘솔로 확인
+        console.log('세션 생성 결과:', result);
+
+        currentSession = {
+            id: result.sessionId, // 반드시 sessionId!
+            user1Name: result.user1Name,
+            user2Name: result.user2Name,
+            user1Completed: false,
+            user2Completed: false
+        };
         questions = result.questions;
-        
-        // 세션 정보 화면 업데이트
+
         updateSessionInfo();
         showScreen('sessionInfo');
-        
         return result;
     } catch (error) {
         console.error('세션 생성 실패:', error);
