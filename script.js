@@ -548,11 +548,10 @@ function copySessionId() {
 
 // 공유 기능
 function shareResult() {
-    const matchPercentage = document.getElementById('match-percentage').textContent;
-    const user1Name = document.getElementById('result-user1').textContent;
-    const user2Name = document.getElementById('result-user2').textContent;
-    const shareText = `${user1Name}과 ${user2Name}의 성향 일치율: ${matchPercentage}`;
-    
+    const user1Name = document.getElementById('result-user1')?.textContent || '';
+    const user2Name = document.getElementById('result-user2')?.textContent || '';
+    const overallScore = document.getElementById('overall-score')?.textContent || '';
+    const shareText = `${user1Name}와 ${user2Name}의 전체 유사성: ${overallScore}%`;
     if (navigator.share) {
         navigator.share({
             title: '성향 파악 미니 퀴즈 결과',
@@ -560,7 +559,6 @@ function shareResult() {
             url: window.location.href
         });
     } else {
-        // 클립보드에 복사
         navigator.clipboard.writeText(shareText).then(() => {
             alert('결과가 클립보드에 복사되었습니다!');
         });
