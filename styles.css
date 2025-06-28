@@ -536,6 +536,8 @@ body {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    max-height: 350px;
+    overflow-y: auto;
 }
 
 .comparison-item {
