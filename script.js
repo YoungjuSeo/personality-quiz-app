@@ -374,6 +374,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const restartQuizBtn = document.getElementById('restart-quiz');
     if (restartQuizBtn) {
         restartQuizBtn.addEventListener('click', () => {
+            if (window.location.search.includes('result=')) {
+                window.history.replaceState({}, '', window.location.pathname);
+            }
             currentSession = null;
             currentUser = null;
             currentQuestionIndex = 0;
@@ -542,25 +545,36 @@ function copySessionId() {
     });
 }
 
-// 공유 기능
+// 공유 기능 (세션ID 포함)
 function shareResult() {
     try {
         const user1Name = document.getElementById('result-user1')?.textContent || '';
         const user2Name = document.getElementById('result-user2')?.textContent || '';
         const overallScore = document.getElementById('overall-score')?.textContent || '';
         const shareText = `${user1Name}와 ${user2Name}의 전체 유사성: ${overallScore}%`;
+        const shareUrl = `${window.location.origin}/?result=${currentSession.id}`;
         if (navigator.share) {
             navigator.share({
                 title: '성향 파악 미니 퀴즈 결과',
                 text: shareText,
-                url: window.location.href
+                url: shareUrl
             });
         } else {
-            navigator.clipboard.writeText(shareText).then(() => {
+            navigator.clipboard.writeText(`${shareText}\n${shareUrl}`).then(() => {
                 alert('결과가 클립보드에 복사되었습니다!');
             });
         }
     } catch (e) {
         // 공유 취소(AbortError) 등은 무시
     }
-} 
+}
+
+// 앱 로드 시 result 파라미터 있으면 결과 자동 조회
+window.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const resultSessionId = urlParams.get('result');
+    if (resultSessionId) {
+        currentSession = { id: resultSessionId };
+        showResults();
+    }
+}); 
