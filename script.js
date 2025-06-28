@@ -476,13 +476,8 @@ function displayResults(result) {
     if (user2Elem) user2Elem.textContent = result.session.user2Name;
     const matchElem = document.getElementById('match-percentage');
     if (matchElem) matchElem.textContent = `${result.matchPercentage}%`;
-    
-    // 성향 분석 표시
-    displayPersonalityAnalysis(result.personalityAnalysis);
-    
     // 매칭 분석 표시
     displayMatchingAnalysis(result.matchingAnalysis);
-    
     // 답변 비교 표시
     displayAnswerComparison(
         result.comparison,
@@ -490,29 +485,6 @@ function displayResults(result) {
         result.session.user2Name,
         currentUser === result.session.user1Name
     );
-}
-
-// 성향 분석 표시
-function displayPersonalityAnalysis(analysis) {
-    // 사회성
-    const user1Social = analysis.user1.socialTendency;
-    const user2Social = analysis.user2.socialTendency;
-    
-    document.getElementById('user1-social-label').textContent = user1Social > 0 ? '외향적' : '내향적';
-    document.getElementById('user2-social-label').textContent = user2Social > 0 ? '외향적' : '내향적';
-    
-    document.getElementById('user1-social-bar').style.width = `${Math.abs(user1Social) * 20}%`;
-    document.getElementById('user2-social-bar').style.width = `${Math.abs(user2Social) * 20}%`;
-    
-    // 의사결정
-    const user1Decision = analysis.user1.decisionStyle;
-    const user2Decision = analysis.user2.decisionStyle;
-    
-    document.getElementById('user1-decision-label').textContent = user1Decision > 0 ? '직감적' : '분석적';
-    document.getElementById('user2-decision-label').textContent = user2Decision > 0 ? '직감적' : '분석적';
-    
-    document.getElementById('user1-decision-bar').style.width = `${Math.abs(user1Decision) * 20}%`;
-    document.getElementById('user2-decision-bar').style.width = `${Math.abs(user2Decision) * 20}%`;
 }
 
 // 매칭 분석 표시
