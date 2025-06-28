@@ -6,7 +6,7 @@ let userAnswers = [];
 let questions = [];
 
 // API 기본 URL
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = 'https://personality-quiz-app.onrender.com/api';
 
 // DOM 요소들
 const screens = {
