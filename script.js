@@ -381,7 +381,6 @@ document.addEventListener('DOMContentLoaded', function() {
             currentUser = null;
             currentQuestionIndex = 0;
             userAnswers = [];
-            questions = [];
             showScreen('start');
         });
     }
