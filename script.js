@@ -591,9 +591,12 @@ async function showResults() {
 // 결과 표시
 function displayResults(result) {
     // 기본 정보
-    document.getElementById('match-percentage').textContent = `${result.matchPercentage}%`;
-    document.getElementById('result-user1').textContent = result.session.user1Name;
-    document.getElementById('result-user2').textContent = result.session.user2Name;
+    const user1Elem = document.getElementById('result-user1');
+    const user2Elem = document.getElementById('result-user2');
+    if (user1Elem) user1Elem.textContent = result.session.user1Name;
+    if (user2Elem) user2Elem.textContent = result.session.user2Name;
+    const matchElem = document.getElementById('match-percentage');
+    if (matchElem) matchElem.textContent = `${result.matchPercentage}%`;
     
     // 성향 분석 표시
     displayPersonalityAnalysis(result.personalityAnalysis);
