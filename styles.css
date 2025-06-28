@@ -615,31 +615,32 @@ body {
 @media (max-width: 480px) {
     .container {
         border-radius: 0;
-        max-height: 100vh;
+        max-height: none !important;
+        overflow: visible !important;
+        padding-top: 0 !important;
     }
-    
-    .title {
-        font-size: 2.2rem;
+    .content {
+        max-width: 100vw !important;
+        max-height: none !important;
+        overflow: visible !important;
+        padding-top: 0 !important;
     }
-    
-    .question {
-        font-size: 1.2rem;
-    }
-    
-    .option-text {
-        font-size: 1rem;
-    }
-    
     .user-names {
+        display: flex !important;
         font-size: 1.1rem !important;
         margin-bottom: 16px !important;
         text-align: center !important;
-        display: flex !important;
         justify-content: center !important;
+        margin-top: 20px !important;
     }
-    
+    .matching-analysis {
+        margin-bottom: 20px !important;
+        margin-top: 0 !important;
+        display: block !important;
+    }
     .matching-grid {
         grid-template-columns: 1fr !important;
+        gap: 10px !important;
     }
 }
 
